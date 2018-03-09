@@ -9,7 +9,9 @@
     "prettier": "prettier --single-quote --write \"src/**/*.js\"",
     "test":
       "mocha ./src/**/*.spec.js --require babel-register --require babel-polyfill",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "build": "babel src --out-dir dist --ignore spec.js",
+    "start": "node ./dist/index.js"
   },
   "lint-staged": {
     "*.{js,json,css,md}": ["prettier --single-quote --write", "git add"]

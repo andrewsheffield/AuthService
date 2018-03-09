@@ -3,12 +3,8 @@ import { Auth } from '../../Models';
 import bcrypt from 'bcrypt';
 import uuid from 'uuid/v4';
 import jwt from 'jsonwebtoken';
-import { readFileSync } from 'fs';
 import path from 'path';
-
-const privateCert = readFileSync(
-  path.resolve(__dirname, '../../../private.key')
-);
+import { getKey } from '../../Services';
 
 type Request = {
   payload: {
@@ -49,8 +45,7 @@ export default async function(request: Request, h: Object) {
 
     auth.refreshTokens.unshift(hashedRefreshToken);
 
-    const authToken = jwt.sign({ user }, privateCert, {
-      algorithm: 'RS256',
+    const authToken = jwt.sign({ user }, getKey(), {
       expiresIn: 30 //in seconds
     });
 

@@ -1,4 +1,5 @@
 /* @flow */
+import 'babel-polyfill';
 import Hapi from 'hapi';
 import mongoose from 'mongoose';
 import { load as loadEnv } from 'dotenv';
@@ -8,8 +9,8 @@ import consoleTime from 'console-stamp';
 import Bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Auth } from './Models';
-import { readFileSync } from 'fs';
 import path from 'path';
+import { getKey } from './Services';
 
 consoleTime(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l',
@@ -37,12 +38,9 @@ const validate = async function(decoded, request) {
 const init = async () => {
   await server.register(plugins);
 
-  const publicCert = readFileSync(path.resolve(__dirname, '../public.pem'));
-
   server.auth.strategy('jwt', 'jwt', {
-    key: publicCert, // Never Share your secret key
-    validate: validate, // validate function defined above
-    verifyOptions: { algorithms: ['RS256'] } // pick a strong algorithm
+    key: getKey(), // Never Share your secret key
+    validate: validate // validate function defined above
   });
 
   server.auth.default('jwt');
