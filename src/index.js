@@ -23,7 +23,9 @@ if (process.env.NODE_ENV !== 'production') {
   loadEnv();
 }
 
-const server = new Hapi.server({ port: 3000 });
+const port = process.env.PORT || 3000;
+
+const server = new Hapi.server({ port });
 
 server.route(routes);
 
