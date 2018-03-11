@@ -23,6 +23,8 @@ if (process.env.NODE_ENV !== 'production') {
   loadEnv();
 }
 
+console.log(process.env.HOST);
+
 const port = process.env.PORT || 3000;
 
 const server = new Hapi.server({ port });
@@ -47,7 +49,7 @@ const init = async () => {
 
   server.auth.default('jwt');
 
-  server.start();
+  await server.start();
 };
 
 init()

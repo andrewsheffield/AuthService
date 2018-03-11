@@ -8,6 +8,7 @@ export type AuthType = {
   _id: string,
   emailVerified: boolean,
   emailVerifiedKey: string,
+  resetPasswordKey: string,
   creationDate: string,
   email: string,
   hashedPassword: string,
@@ -22,6 +23,7 @@ var authSchema = new Schema({
   hashedPassword: String,
   emailVerified: { type: Boolean, default: false },
   emailVerifiedKey: { type: String, default: shortid.generate },
+  resetPasswordKey: String,
   creationDate: { type: Date, default: Date.now },
   refreshTokens: [String],
   user: {

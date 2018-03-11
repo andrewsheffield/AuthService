@@ -10,7 +10,7 @@ const routes = [
     path: '/Signup/CheckUsernameAvailability',
     handler: CheckUsernameAvailability,
     config: {
-      //auth: false,
+      auth: false,
       tags: ['api'], // ADD THIS TAG FOR HAPISWAGGER
       validate: {
         query: {

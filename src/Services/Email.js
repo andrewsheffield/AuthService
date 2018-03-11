@@ -35,3 +35,32 @@ export async function VerifyEmail(to: string, key: string) {
 
   return sentEmail;
 }
+
+export async function ResetPasswordEmail(to: string, key: string) {
+  const url = `http://localhost:3000/Login/ResetPassword?email=${to}&key=${encodeURI(
+    key
+  )}`;
+
+  const msg = {
+    to: to,
+    from: 'service@authapi.com',
+    subject: 'Reset your password.',
+    text: `Copy and paste this url into the browsers address bar: ${url}`,
+    html: `<a href="${url}">Reset Password</a>`,
+    mailSettings: {
+      sandboxMode: {
+        enable: true
+      }
+    }
+  };
+
+  const [sentEmail] = await sgMail.send(msg);
+  const statusCode = sentEmail.statusCode;
+  if (statusCode >= 200 && statusCode < 300) {
+    console.log('Email Sent!', sentEmail.toJSON());
+  } else {
+    console.warn('Email had issues', sentEmail.toJSON());
+  }
+
+  return sentEmail;
+}

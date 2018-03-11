@@ -1,7 +1,7 @@
 /* @flow */
 import shortid from 'shortid';
 import { Auth } from '../../Models';
-import { VerifyEmail } from '../../Services';
+import { ResetPasswordEmail } from '../../Services';
 
 import type { AuthType } from '../../Models';
 
@@ -18,11 +18,11 @@ export default async function(request: Request, h: Object) {
   if (!auth) {
     return h.response({ message: 'Email not in the system.' }).code(404);
   }
-  auth.emailVerifiedKey = shortid.generate();
+  auth.resetPasswordKey = shortid.generate();
 
   await auth.save();
 
-  await VerifyEmail(email, auth.emailVerifiedKey);
+  await ResetPasswordEmail(email, auth.resetPasswordKey);
 
-  return { message: 'New verify email sent' };
+  return { message: 'Reset Password Email Sent!' };
 }
