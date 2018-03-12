@@ -11,6 +11,7 @@ import jwt from 'jsonwebtoken';
 import { Auth } from './Models';
 import path from 'path';
 import { getKey } from './Services';
+import database from './database';
 
 consoleTime(console, {
   pattern: 'dd/mm/yyyy HH:MM:ss.l',
@@ -23,14 +24,6 @@ if (process.env.NODE_ENV !== 'production') {
   loadEnv();
 }
 
-console.log(process.env.HOST);
-
-const port = process.env.PORT || 3000;
-
-const server = new Hapi.server({ port });
-
-server.route(routes);
-
 const validate = async function(decoded, request) {
   if (decoded.user) {
     return { isValid: true, credentials: decoded.user };
@@ -40,6 +33,11 @@ const validate = async function(decoded, request) {
 };
 
 const init = async () => {
+  const port = process.env.PORT || 3000;
+  const server = new Hapi.server({ port });
+
+  server.route(routes);
+
   await server.register(plugins);
 
   server.auth.strategy('jwt', 'jwt', {
@@ -49,28 +47,14 @@ const init = async () => {
 
   server.auth.default('jwt');
 
-  await server.start();
+  const [serverStart, db] = await Promise.all([server.start(), database()]);
+  return server;
 };
 
 init()
-  .then(() => {
-    console.log('App Started');
+  .then(server => {
+    console.log(`Server started: ${server.info.uri}`);
   })
   .catch(err => {
     console.log(err);
   });
-
-const mongoUser = process.env.MONGO_USER || 'user';
-const mongoPw = process.env.MONGO_PW || 'password';
-const mongoUri = process.env.MONGO_URI || 'localhost:27017';
-const mongoDbName = process.env.MONGO_DB_NAME || 'my-db';
-
-mongoose.connect(
-  `mongodb://${mongoUser}:${mongoPw}@${mongoUri}/${mongoDbName}`
-);
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('CONNECTED TO THE DB!!!');
-});

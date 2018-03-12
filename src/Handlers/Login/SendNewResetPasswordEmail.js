@@ -22,7 +22,7 @@ export default async function(request: Request, h: Object) {
 
   await auth.save();
 
-  await ResetPasswordEmail(email, auth.resetPasswordKey);
+  await ResetPasswordEmail(request, email, auth.resetPasswordKey);
 
   return { message: 'Reset Password Email Sent!' };
 }

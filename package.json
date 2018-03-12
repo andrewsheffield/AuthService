@@ -1,8 +1,11 @@
 {
   "name": "authservices",
   "version": "1.0.0",
-  "description": "",
+  "description":
+    "An Authentication Server that uses a JWT and refresh token pattern",
   "main": "index.js",
+  "author": "AJ Sheff",
+  "license": "MIT",
   "scripts": {
     "dev": "nodemon ./src/index.js --exec babel-node",
     "flow": "flow",
@@ -16,8 +19,6 @@
   "lint-staged": {
     "*.{js,json,css,md}": ["prettier --single-quote --write", "git add"]
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
@@ -29,7 +30,7 @@
     "flow-bin": "^0.64.0",
     "flow-typed": "^2.3.0",
     "good": "^8.0.0-rc1",
-    "good-console": "^7.0.0",
+    "good-console": "^7.1.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
     "mocha": "^5.0.0",

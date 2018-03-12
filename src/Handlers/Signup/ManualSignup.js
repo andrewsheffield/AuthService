@@ -54,7 +54,7 @@ export default async function(request: Request, h: Object) {
 
   // Attempt to send email, delete user and auth if save in unsuccessful
   try {
-    await VerifyEmail(email, auth.emailVerifiedKey);
+    await VerifyEmail(request, email, auth.emailVerifiedKey);
   } catch (error) {
     console.error('Could not send email');
     await Promise.all([user.remove(), auth.remove()]);

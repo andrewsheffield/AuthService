@@ -7,10 +7,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export async function VerifyEmail(to: string, key: string) {
-  const url = `http://localhost:3000/Login/VerifyEmail?email=${to}&key=${encodeURI(
-    key
-  )}`;
+export async function VerifyEmail(request: Object, to: string, key: string) {
+  const { uri } = request.server.info;
+  const url = `${uri}/Login/VerifyEmail?email=${to}&key=${encodeURI(key)}`;
 
   const msg = {
     to: to,
@@ -28,18 +27,21 @@ export async function VerifyEmail(to: string, key: string) {
   const [sentEmail] = await sgMail.send(msg);
   const statusCode = sentEmail.statusCode;
   if (statusCode >= 200 && statusCode < 300) {
-    console.log('Email Sent!', sentEmail.toJSON());
+    console.log('Email sent successfully!');
   } else {
-    console.warn('Email had issues', sentEmail.toJSON());
+    console.warn('Sending email error', sentEmail.body);
   }
 
   return sentEmail;
 }
 
-export async function ResetPasswordEmail(to: string, key: string) {
-  const url = `http://localhost:3000/Login/ResetPassword?email=${to}&key=${encodeURI(
-    key
-  )}`;
+export async function ResetPasswordEmail(
+  request: Object,
+  to: string,
+  key: string
+) {
+  const { uri } = request.server.info;
+  const url = `${uri}/Login/ResetPassword?email=${to}&key=${encodeURI(key)}`;
 
   const msg = {
     to: to,
@@ -57,9 +59,9 @@ export async function ResetPasswordEmail(to: string, key: string) {
   const [sentEmail] = await sgMail.send(msg);
   const statusCode = sentEmail.statusCode;
   if (statusCode >= 200 && statusCode < 300) {
-    console.log('Email Sent!', sentEmail.toJSON());
+    console.log('Email sent successfully!');
   } else {
-    console.warn('Email had issues', sentEmail.toJSON());
+    console.warn('Sending email error', sentEmail.body);
   }
 
   return sentEmail;

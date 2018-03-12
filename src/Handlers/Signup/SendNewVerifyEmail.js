@@ -22,7 +22,7 @@ export default async function(request: Request, h: Object) {
 
   await auth.save();
 
-  await VerifyEmail(email, auth.emailVerifiedKey);
+  await VerifyEmail(request, email, auth.emailVerifiedKey);
 
   return { message: 'New verify email sent' };
 }
