@@ -8,8 +8,10 @@ if (process.env.NODE_ENV !== 'production') {
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export async function VerifyEmail(request: Object, to: string, key: string) {
-  const { uri } = request.server.info;
-  const url = `${uri}/Login/VerifyEmail?email=${to}&key=${encodeURI(key)}`;
+  const uri: string = process.env.HOST || 'http://localhost:3000';
+  const url: string = `${uri}/Login/VerifyEmail?email=${to}&key=${encodeURI(
+    key
+  )}`;
 
   const msg = {
     to: to,
@@ -40,8 +42,10 @@ export async function ResetPasswordEmail(
   to: string,
   key: string
 ) {
-  const { uri } = request.server.info;
-  const url = `${uri}/Login/ResetPassword?email=${to}&key=${encodeURI(key)}`;
+  const uri: string = process.env.HOST || 'http://localhost:3000';
+  const url: string = `${uri}/Login/ResetPassword?email=${to}&key=${encodeURI(
+    key
+  )}`;
 
   const msg = {
     to: to,
