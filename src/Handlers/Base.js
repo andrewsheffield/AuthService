@@ -10,6 +10,7 @@ type Request = {
 };
 
 export default async function(request: Request, h: Object) {
+  console.log(process.env);
   return {
     description,
     author,
